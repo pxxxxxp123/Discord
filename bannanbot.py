@@ -12,7 +12,7 @@ with open("C:/Users/brenn/Desktop/Discord bot/userids.csv", mode="r") as pointer
 import discord
 from discord.ext import commands
 import datetime
-from random import*
+import random
 
 token = 'OTc3ODM1NTYzMjY2NzY4OTU3.GjDkl-.Qej_sp1VNOkGcXa6BXPXlKCsGP80VDf9C9hmG0'
 bannanid = 265758251705040896
