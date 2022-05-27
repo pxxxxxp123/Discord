@@ -12,6 +12,7 @@ with open("C:/Users/brenn/Desktop/Discord bot/userids.csv", mode="r") as pointer
 import discord
 from discord.ext import commands
 import datetime
+from random import*
 
 token = 'OTc3ODM1NTYzMjY2NzY4OTU3.GjDkl-.Qej_sp1VNOkGcXa6BXPXlKCsGP80VDf9C9hmG0'
 bannanid = 265758251705040896
@@ -36,6 +37,7 @@ async def on_message(message):
     for i in aww_see_lst:
         if i in message.content:
             await message.channel.send('Badabida')
+    await bot.process_commands(message)
 
         
 #when people connect to vc
@@ -56,5 +58,12 @@ async def on_voice_state_update(member, before, after):
 async def trivia(ctx):
     qns = random.choice(dlist)
     await ctx.send(qns)
+    
+@bot.command()
+async def cf(ctx):
+    cfoptions = ['heads','tails']
+    response = random.choice(cfoptions)
+    await ctx.send(response)
+
 
 bot.run(token)
