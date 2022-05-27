@@ -52,6 +52,9 @@ async def on_voice_state_update(member, before, after):
         if before.channel is None and after.channel is not None:
             now = datetime.datetime.now()
             
-            
+@bot.command()
+async def trivia(ctx):
+    qns = random.choice(dlist)
+    await ctx.send(qns)
 
 bot.run(token)
