@@ -22,7 +22,7 @@ bot = commands.Bot(command_prefix='!')
 @bot.event
 async def on_ready():
     print('bot is online')
-    txtgrp = bot.get_channel(979402496642543706)
+    txtgrp = bot.get_channel(528938798772387840)
     await txtgrp.send("bannanbot is online _ _gglets")
     
 
