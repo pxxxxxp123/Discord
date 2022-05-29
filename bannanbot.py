@@ -1,19 +1,24 @@
 import csv
 data_list = []
 
-with open("C:/Users/brenn/Desktop/Discord bot/userids.csv", mode="r") as pointer:
+'''
+with open("C:/Users/brenn/Desktop/Discord bot/triviaqns.csv", mode="r", encoding='utf-8') as pointer:
     csv_pointer = csv.reader(pointer)
     for row in csv_pointer:
         data_list.append(row)
     pointer.close()
+'''
+
+def read_csv(csvfilename):
+    with open(csvfilename, encoding='utf-8') as csvfile:
+        rows = [row for row in csv.reader(csvfile)]
+    return rows
 
 #%%
 
-import discord
 from discord.ext import commands
 import datetime
 import random
-
 token = 'OTc3ODM1NTYzMjY2NzY4OTU3.GjDkl-.Qej_sp1VNOkGcXa6BXPXlKCsGP80VDf9C9hmG0'
 bannanid = 265758251705040896
 bot = commands.Bot(command_prefix='!')
@@ -36,7 +41,7 @@ async def on_message(message):
         await message.channel.send('Shhh. Daddy might be working... He\'ll spank u Uwu')
     for i in aww_see_lst:
         if i in message.content.lower():
-            await message.channel.send('Badabida')
+            await message.channel.send('BADABIDA')
     await bot.process_commands(message)
 
         
@@ -44,7 +49,7 @@ async def on_message(message):
 @bot.event
 async def on_voice_state_update(member, before, after):
     channel = before.channel or after.channel
-    if channel.id != 373762193323458565 and member.id != bannanid: # Destiny of Chungus Voice Channel 1
+    if channel.id != 373762193323458565 or member.id != bannanid: # Destiny of Chungus Voice Channel 1
         if before.channel is None and after.channel is not None:
             now = datetime.datetime.now()
             bannan = member.guild.get_member(bannanid)
@@ -53,23 +58,20 @@ async def on_voice_state_update(member, before, after):
     else: #If chungus voice 1
         if before.channel is None and after.channel is not None:
             now = datetime.datetime.now()
+            member.send(f'nigglet joinied call at {now.hour}:{now.minute}')
             
+
+
 @bot.command()
-async def trivia(ctx):
-    qns = random.choice(dlist)
-    await ctx.send(qns)
-"""
-async def startT(ctx):
-    qn_ans = random.choice(trivial_lst)
-    ans = qn_ans[1]
-    await ctx.send(qn_ans[0])
-    qn = qn_ans[1:]
-    helper = [1,2,3]
-    while helper != []:
-        n = random.randint(1,3)
-        helper.remove(n)
-        await ctx.send(qn_ans[n])
-"""
+async def tqns(ctx):
+    data_list = read_csv('C:/Users/brenn/Desktop/Discord bot/triviaqns.csv')
+    selection = random.choice(data_list)
+    await ctx.send(selection[0])
+    ans = selection[1:]
+    shuffled = random.sample(ans, len(ans))
+    for each in range(len(shuffled)):
+        await ctx.send(shuffled[each])
+
     
 @bot.command()
 async def cf(ctx):
