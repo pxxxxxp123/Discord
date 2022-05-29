@@ -58,10 +58,10 @@ async def on_voice_state_update(member, before, after):
     else: #If chungus voice 1
         if before.channel is None and after.channel is not None:
             now = datetime.datetime.now()
-            member.send(f'nigglet joinied call at {now.hour}:{now.minute}')
+            member.send(f'{member} joinied call at {now.hour}:{now.minute}')
             
 
-
+'''
 @bot.command()
 async def tqns(ctx):
     data_list = read_csv('C:/Users/brenn/Desktop/Discord bot/triviaqns.csv')
@@ -71,7 +71,15 @@ async def tqns(ctx):
     shuffled = random.sample(ans, len(ans))
     for each in range(len(shuffled)):
         await ctx.send(shuffled[each])
-
+'''
+@bot.command()
+async def tqns(ctx):
+    data_list = read_csv('C:/Users/brenn/Desktop/Discord bot/triviaqns.csv')
+    selection = random.choice(data_list)
+    await ctx.send(selection[0])
+    ans = selection[1:]
+    shuffled = random.sample(ans, len(ans))
+    await ctx.send('1. {} 2. {} 3. {}'.format(*shuffled))
     
 @bot.command()
 async def cf(ctx):
