@@ -27,7 +27,7 @@ async def on_ready():
     
 
 #responses to messages
-aww_see_lst = ['Or C','or c', 'Aww See', 'aww see', 'aussie']
+aww_see_lst = ['or c', 'aww see', 'aussie', 'aw c', 'aww c', 'aw se']
 @bot.event
 async def on_message(message):
     if message.author == bot.user:
@@ -35,7 +35,7 @@ async def on_message(message):
     if str(bannanid) in message.content:
         await message.channel.send('Shhh. Daddy might be working... He\'ll spank u Uwu')
     for i in aww_see_lst:
-        if i in message.content:
+        if i in message.content.lower():
             await message.channel.send('Badabida')
     await bot.process_commands(message)
 
@@ -58,6 +58,18 @@ async def on_voice_state_update(member, before, after):
 async def trivia(ctx):
     qns = random.choice(dlist)
     await ctx.send(qns)
+"""
+async def startT(ctx):
+    qn_ans = random.choice(trivial_lst)
+    ans = qn_ans[1]
+    await ctx.send(qn_ans[0])
+    qn = qn_ans[1:]
+    helper = [1,2,3]
+    while helper != []:
+        n = random.randint(1,3)
+        helper.remove(n)
+        await ctx.send(qn_ans[n])
+"""
     
 @bot.command()
 async def cf(ctx):
