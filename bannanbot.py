@@ -1,14 +1,6 @@
 import csv
 data_list = []
 
-'''
-with open("C:/Users/brenn/Desktop/Discord bot/triviaqns.csv", mode="r", encoding='utf-8') as pointer:
-    csv_pointer = csv.reader(pointer)
-    for row in csv_pointer:
-        data_list.append(row)
-    pointer.close()
-'''
-
 def read_csv(csvfilename):
     with open(csvfilename, encoding='utf-8') as csvfile:
         rows = [row for row in csv.reader(csvfile)]
@@ -16,6 +8,7 @@ def read_csv(csvfilename):
 
 #%%
 
+import discord
 from discord.ext import commands
 import datetime
 import random
@@ -28,7 +21,8 @@ bot = commands.Bot(command_prefix='!')
 async def on_ready():
     print('bot is online')
     txtgrp = bot.get_channel(528938798772387840)
-    await txtgrp.send("bannanbot is online _ _gglets")
+    #await txtgrp.send("bannanbot is online _ _gglets")
+    #await bot.change_presence(status=discord.Status.idle)
     
 
 #responses to messages
@@ -86,6 +80,16 @@ async def cf(ctx):
     cfoptions = ['heads','tails']
     response = random.choice(cfoptions)
     await ctx.send(response)
+    
+
+@bot.command()
+async def status(ctx, arg1):
+    if arg1 == 'idle':
+        await bot.change_presence(status=discord.Status.idle)
+    elif arg1 == 'offline':
+        await bot.change_presence(status=discord.Status.invisible)
+    else:
+        await bot.change_presence(status=discord.Status.online)
 
 
 bot.run(token)
