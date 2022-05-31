@@ -10,7 +10,7 @@ def read_csv(csvfilename):
 
 class trivia:
     def __init__(self, lst, ctx):
-        self.point = 0
+        self.score = {}
         self.lst = lst
         self.answer = None
         self.ctx = ctx
@@ -24,4 +24,19 @@ class trivia:
         await self.ctx.send('a. {} b. {} c. {}'.format(*shuffled))
         helper = {0:'a', 1:'b', 2: 'c'}
         self.answer = helper[shuffled.index(selection[1])]
+        
+    def add_player(self, user):
+        #username = message.author.username
+        self.score[user] = 0
+        
+    def add_point(self, user):
+        self.score[user] += 1
+        
+    def get_score(self, message):
+        await message.channel.send(f"{message.author.username} has {self.score[message.author.username]}")
+    def get_leaderboard(self):
+        helper = dict(sorted(self.score.items(), lambda x: x[1], reverse = True))
+        pass
+                                   
+                    
         
