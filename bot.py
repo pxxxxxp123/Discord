@@ -4,7 +4,7 @@ import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 from coinflip import*
-import datetime
+from PointSystem import*
 import csv
 import random
 from trivia import*
@@ -16,7 +16,7 @@ def read_csv(csvfilename):
 
 load_dotenv()
 TOKEN = 'OTc2MTI0NTI3MTE5NTg1Mzcw.GGumSk.2ETNo5_MRThYniFEvsWx2mcHCHat2DznhihaNc'
-bot = commands.Bot(command_prefix='::')
+bot = commands.Bot(command_prefix=';;')
 trivia_lst = read_csv('random.csv')
 game_trivia = None
 
@@ -31,8 +31,11 @@ async def on_ready():
                 break
 @bot.event
 async def on_member_join(member):
-    channel = bot.get_channel(978909709992087552)
-    await channel.send(f"Welcome {member.name} to Uniqlo!")
+    for server in bot.guilds:
+        for channel in server.text_channels:
+            if channel.permissions_for(server.me).send_messages:
+                print(channel)
+                await channel.send(f"Welcome {member.name} to Uniqlo!")
 """
 class bot_join:
     async def join(ctx):
@@ -73,7 +76,7 @@ async def on_message(message):
 async def cf(ctx):
     await ctx.send(f"The Coin has landed on {flip()}")
     
-###Trivia Bot###
+###Trivia Bot Command###
 @bot.command()
 async def startT(ctx):
     if game_trivia == None:
@@ -85,7 +88,7 @@ async def startT(ctx):
 @bot.command()
 async def stopT(ctx):
     await ctx.send(f"Quiz has stop")
-    game_trivia.get_leaderboard()
+    await game_trivia.get_leaderboard(ctx)
     globals()['game_trivia'] = None
 
 @bot.command()
