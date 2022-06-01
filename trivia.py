@@ -24,19 +24,28 @@ class trivia:
         await self.ctx.send('a. {} b. {} c. {}'.format(*shuffled))
         helper = {0:'a', 1:'b', 2: 'c'}
         self.answer = helper[shuffled.index(selection[1])]
-        
-    def add_player(self, user):
+
+    def add_player(self, message):
         #username = message.author.username
-        self.score[user] = 0
+        print(message.author)
+        self.score[message.author.name] = 0
         
-    def add_point(self, user):
-        self.score[user] += 1
+    def add_point(self, message):
+        self.score[message.author.name] += 1
         
-    def get_score(self, message):
-        await message.channel.send(f"{message.author.username} has {self.score[message.author.username]}")
-    def get_leaderboard(self):
-        helper = dict(sorted(self.score.items(), lambda x: x[1], reverse = True))
-        pass
+    async def get_score(self, ctx):
+        if ctx.author.name not in self.score:
+            await ctx.send(f"{ctx.author.name} has not earned any point")
+        else:
+            await ctx.send(f"{ctx.author.name} has {self.score[ctx.author.name]}")
+
+    async def get_leaderboard(self, ctx):
+        helper = sorted(self.score.items(), key = lambda x: x[1], reverse = True)
+        await ctx.send("=====Leaderboard=====")
+        string = ''
+        for key,value in helper:
+            string += str(key) +': ' + str(value) + '\n'
+        await ctx.send(string)
                                    
                     
         
