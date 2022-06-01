@@ -14,16 +14,34 @@ class trivia:
         self.lst = lst
         self.answer = None
         self.ctx = ctx
+        self.asked = []
 
     async def next_question(self):
         data_list = self.lst
         selection = random.choice(data_list)
-        await self.ctx.send(selection[0])
-        ans = selection[1:]
-        shuffled = random.sample(ans, len(ans))
-        await self.ctx.send('a. {} b. {} c. {}'.format(*shuffled))
-        helper = {0:'a', 1:'b', 2: 'c'}
-        self.answer = helper[shuffled.index(selection[1])]
+        if selection not in self.asked:
+            self.asked.append(selection)
+            await self.ctx.send(selection[0])
+            ans = selection[1:]
+            shuffled = random.sample(ans, len(ans))
+            helper = {0:'a', 1:'b', 2: 'c'}
+            self.answer = helper[shuffled.index(selection[1])]
+            print(self.answer)
+            await self.ctx.send('a. {} b. {} c. {}'.format(*shuffled))
+        else:
+            await self.next_question()
+
+    async def correct_answer(self,message):
+        await message.channel.send('Correct!')
+        self.add_point(message)
+
+    async def wrong_answer(self,message):
+        await message.channel.send('Wrong!')
+
+    async def end_quiz(self, message):
+        await message.channel.send(f"That is the last question")
+        await message.channel.send(f"End of Quiz")
+        await self.get_leaderboard(message.channel)
 
     def add_player(self, message):
         #username = message.author.username
