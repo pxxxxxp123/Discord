@@ -23,9 +23,12 @@ game_trivia = None
 @bot.event
 async def on_ready():
     print(f'{bot.user} has connected to Discord!')
-    channel = bot.get_channel(978909709992087552)
-    await channel.send('Waddup Niggas, Bot is Up!')
-
+    for server in bot.guilds:
+        for channel in server.text_channels:
+            if channel.permissions_for(server.me).send_messages:
+                print(channel)
+                await channel.send('Waddup Niggas, Bot is Up!')
+                break
 @bot.event
 async def on_member_join(member):
     channel = bot.get_channel(978909709992087552)
@@ -55,18 +58,22 @@ async def on_message(message):
             if message.author.name not in game_trivia.score.keys():
                 game_trivia.add_player(message)
             if message_lower == game_trivia.answer:
-                await message.channel.send('Correct!')
-                game_trivia.add_point(message)
+                await game_trivia.correct_answer(message)
             else:
-                await message.channel.send('Wrong!')
-            await game_trivia.next_question()
-        
+                await game_trivia.wrong_answer(message)
+            if len(game_trivia.asked) == len(trivia_lst):
+                await game_trivia.end_quiz(message)
+                globals()['game_trivia'] = None
+            else:
+                await game_trivia.next_question()
+                
     await bot.process_commands(message)
 
 @bot.command()
 async def cf(ctx):
     await ctx.send(f"The Coin has landed on {flip()}")
-
+    
+###Trivia Bot###
 @bot.command()
 async def startT(ctx):
     if game_trivia == None:
@@ -77,8 +84,9 @@ async def startT(ctx):
 
 @bot.command()
 async def stopT(ctx):
-    globals()['game_trivia'] = None
     await ctx.send(f"Quiz has stop")
+    game_trivia.get_leaderboard()
+    globals()['game_trivia'] = None
 
 @bot.command()
 async def lb(ctx):
@@ -91,4 +99,5 @@ async def score(ctx):
     if game_trivia != None:
         await game_trivia.get_score(ctx)
 
+################
 bot.run(TOKEN)
