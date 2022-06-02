@@ -15,6 +15,7 @@ class trivia:
         self.answer = None
         self.ctx = ctx
         self.asked = []
+        self.ongoing = True
 
     async def next_question(self):
         data_list = self.lst
