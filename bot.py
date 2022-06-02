@@ -8,6 +8,7 @@ from PointSystem import*
 import csv
 import random
 from trivia import*
+import time
 
 def read_csv(csvfilename):
     with open(csvfilename, encoding='utf-8') as csvfile:
