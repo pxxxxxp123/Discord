@@ -28,7 +28,7 @@ async def on_ready():
         for channel in server.text_channels:
             if channel.permissions_for(server.me).send_messages:
                 print(channel)
-                await channel.send('Waddup Niggas, Bot is Up!')
+                #await channel.send('Waddup Niggas, Bot is Up!')
                 break
 @bot.event
 async def on_member_join(member):
@@ -60,18 +60,19 @@ async def on_message(message):
         if game_trivia.ongoing == True:
             message_lower = message.content.lower()
             if message_lower in ['a', 'b', 'c']:
+                game_trivia.ongoing = False
                 if message.author.name not in game_trivia.score.keys():
                     game_trivia.add_player(message)
                 if message_lower == game_trivia.answer:
-                    game_trivia.ongoing = False
                     await game_trivia.correct_answer(message)
-                    time.sleep(3)
                 else:
                     await game_trivia.wrong_answer(message)
                 if len(game_trivia.asked) == len(trivia_lst):
+                    game_trivia.ongoing = False
                     await game_trivia.end_quiz(message)
                     globals()['game_trivia'] = None
                 else:
+                    await message.channel.send('Next Question')
                     await game_trivia.next_question()
                 
     await bot.process_commands(message)
@@ -85,6 +86,7 @@ async def cf(ctx):
 async def startT(ctx):
     if game_trivia == None:
         globals()['game_trivia'] = trivia(trivia_lst,ctx)
+        await ctx.send('======Quiz has Started======')
         await game_trivia.next_question()
     else:
         await ctx.send(f"Game is already running!")
