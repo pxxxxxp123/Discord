@@ -16,7 +16,7 @@ def read_csv(csvfilename):
     return rows
 
 load_dotenv()
-TOKEN = 'OTc2MTI0NTI3MTE5NTg1Mzcw.GGumSk.2ETNo5_MRThYniFEvsWx2mcHCHat2DznhihaNc'
+TOKEN = 'Input token'
 bot = commands.Bot(command_prefix=';;')
 trivia_lst = read_csv('random.csv')
 game_trivia = None
@@ -28,7 +28,7 @@ async def on_ready():
         for channel in server.text_channels:
             if channel.permissions_for(server.me).send_messages:
                 print(channel)
-                #await channel.send('Waddup Niggas, Bot is Up!')
+                #await channel.send('Bot is Up!')
                 break
 @bot.event
 async def on_member_join(member):
